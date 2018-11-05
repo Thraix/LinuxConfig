@@ -1,0 +1,4 @@
+for id in `xinput --list|grep 'Logitech Gaming Mouse G502'|perl -ne 'while (m/id=(\d+)/g){print "$1\n";}'`; do
+  xinput set-prop $id 'libinput Accel Profile Enabled' 0, 1 > /dev/null 2>&1
+done
+
