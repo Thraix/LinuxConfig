@@ -28,6 +28,7 @@ mkdir polybar/build
 cd polybar/build
 cmake -DCMAKE_C_COMPILER="clang" -DCMAKE_CXX_COMPILER="clang++"..
 make install
+cd ../..
 
 # Rofi
 apt install rofi -y
@@ -43,6 +44,14 @@ apt install compton -y
 git clone https://github.com/chriskempson/base16-shell.git ~/.config/base16-shell
 
 ~/.config/base16-shell/scripts/base16-material-palenight.sh
+
+# i3lock-fancy
+git clone https://github.com/meskarune/i3lock-fancy.git
+
+cd i3lock-fancy
+sudo make install
+cd ..
+
 
 # install configs and scripts
 cd $dir
