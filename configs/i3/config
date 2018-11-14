@@ -292,4 +292,6 @@ exec_always sh ~/.screenlayout/screen.sh
 exec_always feh --bg-scale ~/Pictures/Firefox_wallpaper.png
 exec compton -f --config ~/.config/compton/compton.conf
 exec redshift
+exec setxkbmap -layout us,se
+exec setxkbmap -option 'grp:alt_shift_toggle'
 
