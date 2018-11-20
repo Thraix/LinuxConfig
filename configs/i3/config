@@ -51,7 +51,7 @@ client.urgent           $urgent-bg-color  $urgent-bg-color  $urgent-text-color  
 
 client.background       #ffffff
 
-for_window [class="^.*"] border pixel 3 
+  for_window [class="^.*"] border pixel 1 
 gaps inner 7
 gaps outer 0 
 smart_gaps on
@@ -150,8 +150,8 @@ workspace $ws5 output $monitor1
 workspace $ws6 output $monitor1 
 workspace $ws7 output $monitor2 
 workspace $ws8 output $monitor1 
-workspace $ws9 output $monitor1 
-workspace $ws10 output $monitor1 
+workspace $ws9 output $monitor2 
+workspace $ws10 output $monitor2 
 workspace $wsWall1 output $monitor1 
 workspace $wsWall2 output $monitor2 
 
@@ -214,22 +214,8 @@ mode "resize" {
 
 bindsym $mod+x mode "resize"
 
-
-# Start i3bar to display a workspace bar (plus the system information i3status
-# finds out, if available)
+# Start polybar
 exec_always --no-startup-id i3polybar
-#bar {
-#  status_command polybar example 
-#    colors {
-#      background $bg-color
-#        separator #757575
-#        statusline $i-text-color
-#        #                  border             background         text
-#        focused_workspace  $bg-color          $bg-color          $text-color
-#        inactive_workspace $i-bg-color $i-bg-color $i-text-color
-#        urgent_workspace   $urgent-bg-color   $urgent-bg-color   $urgent-text-color
-#    }   
-#}
 
 # Pulse Audio controls
 bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 2 +5% #increase sound volume
@@ -276,22 +262,21 @@ assign [class="Runescape"] "11: disposable"
 for_window [class="Godot" title="^King of the Farmland$"] floating enable
 for_window [class="Wine" title="^WineDesktop - Wine desktop$"] move to workspace $ws6
 
-exec steam
-exec firefox
-exec discord
-exec mailspring
+exec --no-startup-id steam
+exec --no-startup-id firefox
+exec --no-startup-id discord
+exec --no-startup-id mailspring
 
 # Setup i3 
 ## Setup audio device
-exec pactl set-default-sink 2
+exec_always pactl --no-startup-id set-default-sink 2
 ## Setup remove mouse accel 
-exec_always i3xinput
+exec_always --no-startup-id i3xinput
 ## Setup monitor layout
-exec_always sh ~/.screenlayout/screen.sh
+exec_always --no-startup-id sh ~/.screenlayout/screen.sh
 ## Setup wallpaper
-exec_always feh --bg-scale ~/Pictures/Firefox_wallpaper.png
-exec compton -f --config ~/.config/compton/compton.conf
-exec redshift
-exec setxkbmap -layout us,se
-exec setxkbmap -option 'grp:alt_shift_toggle'
-
+exec_always --no-startup-id feh --bg-scale ~/Pictures/Firefox_wallpaper.png
+exec --no-startup-id compton -f --config ~/.config/compton/compton.conf
+exec --no-startup-id setxkbmap -layout us,se -option 'grp:alt_shift_toggle'
+exec --no-startup-id xrandr --output DVI-D-0 --mode "1920x1080" -r 144 --primary --right-of HDMI-0
+exec --no-startup-id redshift
