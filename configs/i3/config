@@ -51,9 +51,11 @@ client.urgent           $urgent-bg-color  $urgent-bg-color  $urgent-text-color  
 
 client.background       #ffffff
 
-  for_window [class="^.*"] border pixel 1 
-gaps inner 7
-gaps outer 0 
+for_window [class="^.*"] border pixel 1 
+
+# negative number to have same top margin as smart gaps
+gaps top -7
+gaps inner 7 
 smart_gaps on
 
 # start a terminal
@@ -242,10 +244,9 @@ mode "$mode_system" {
 }
 
 bindsym $mod+shift+BackSpace mode "$mode_system"
-assign [class="discord"] $ws10
 assign [class="Firefox"] $ws2
-assign [class="Spotify|spotify"] $ws7 
-assign [class="Steam"] $ws8
+
+# GAMES
 assign [class="RuneScape"] $ws6
 assign [class="Minecraft"] $ws6
 assign [class="Minecraft Launcher"] $ws6
@@ -253,19 +254,34 @@ assign [class="Best Game Ever"] $ws6
 assign [class="armello.x86_64"] $ws6
 assign [class="Binding of Isaac: Afterbirth+"] $ws6
 assign [class="deadcells"] $ws6
-assign [class="vlc"] $ws7 
-assign [class="Mailspring"] $ws10
 assign [class="Lutris"] $ws6
 assign [class="Wine"] $ws6
+
+# MUSIC
+assign [class="Spotify|spotify"] $ws7 
+
+# VIDEO
+assign [class="vlc"] $ws7 
+
+# STEAM
+assign [class="Steam"] $ws8
+
+# SOCIAL
+assign [class="Mailspring"] $ws10
+assign [class="discord"] $ws10
+assign [class="slack"] $ws10
+
 # Runescape launcher
 assign [class="Runescape"] "11: disposable"
 for_window [class="Godot" title="^King of the Farmland$"] floating enable
 for_window [class="Wine" title="^WineDesktop - Wine desktop$"] move to workspace $ws6
+for_window [class="Spotify"] move to workspace $ws9
 
 exec --no-startup-id steam
 exec --no-startup-id firefox
 exec --no-startup-id discord
 exec --no-startup-id mailspring
+exec --no-startup-id slack 
 
 # Setup i3 
 ## Setup audio device
@@ -277,6 +293,6 @@ exec_always --no-startup-id sh ~/.screenlayout/screen.sh
 ## Setup wallpaper
 exec_always --no-startup-id feh --bg-scale ~/Pictures/Firefox_wallpaper.png
 exec --no-startup-id compton -f --config ~/.config/compton/compton.conf
-exec --no-startup-id setxkbmap -layout us,se -option 'grp:alt_shift_toggle'
+exec_always --no-startup-id setxkbmap -layout us,se -option 'grp:alt_shift_toggle'
 exec --no-startup-id xrandr --output DVI-D-0 --mode "1920x1080" -r 144 --primary --right-of HDMI-0
 exec --no-startup-id redshift
