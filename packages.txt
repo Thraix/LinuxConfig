@@ -11,6 +11,8 @@ i3
 i3-wm
 libcairo2-dev
 libev-dev
+libfreeimage-dev
+libglew-dev
 libjsoncpp-dev
 libnl-genl-3-dev
 libpango1.0-dev
@@ -44,5 +46,6 @@ vim-gtk
 vlc
 xcb-proto
 xdotool
+xorg-dev
 yad
 zsh
