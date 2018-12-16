@@ -74,7 +74,7 @@ set t_Co=256
 set number
 set relativenumber
 
-noremap S :call SwitchSourceHeader()<CR>
+noremap <C-s> :call SwitchSourceHeader()<CR>
 
 set comments=sl:/*,mb:\ *,elx:\ */
 
@@ -84,6 +84,8 @@ noremap <C-k> :m .-2<CR>==
 noremap <C-j> :m .+1<CR>==
 noremap <C-b> :tabm -1<CR>
 noremap <C-n> :tabm +1<CR>
+noremap <C-o> :NERDTree %<CR>
+noremap <C-q> :q<CR>
 map <F12> :!make<CR>
 noremap <S-tab> gg=G''
 noremap <C-G> :YcmCompleter GoTo<CR>
@@ -104,19 +106,23 @@ let g:indentLine_char = '|'
 
 function! SwitchSourceHeader()
   "update!
-  if (expand ("%:e") == "cpp" || expand("%:e") == "cc")
-    tab drop %:t:r.h
-  else
+  if (expand ("%:e") == "cpp" || expand("%:e") == "cc" || expand("%:e") == "c")
+    if filereadable(join([expand("%<"),".h"],""))
+      tab drop %:r.h
+    elseif filereadable(join([expand("%<"),".hpp"],""))
+      tab drop %:r.hpp
+    end
+  elseif (expand ("%:e") == "hpp" || expand("%:e") == "h")
     if filereadable(join([expand("%<"),".cc"],""))
-        tab drop %:t:r.cc
-    elseif filereadable(expand(join(["%<",".cpp"],"")))
-        tab drop %:t:r.cpp
+      tab drop %:r.cc
+    elseif filereadable(join([expand("%<"),".cpp"],""))
+      tab drop %:r.cpp
+    elseif filereadable(join([expand("%<"),".c"],""))
+      tab drop %:r.c
     endif
   endif
 endfunction
 
-"nmap s :call SwitchSourceHeader()<CR>
-"
 if filereadable(expand("~/.vimrc_background"))
   let base16colorspace=256
   source ~/.vimrc_background
@@ -143,6 +149,8 @@ let g:javascript_plugin_jsdoc = 1
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
+
+let NERDTreeQuitOnOpen=1
 
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1

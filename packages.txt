@@ -4,6 +4,7 @@ clang
 cmake
 cmake-data
 compton
+cppman
 curl
 feh
 gimp
@@ -45,6 +46,7 @@ vim
 vim-gtk
 vlc
 xcb-proto
+xclip
 xdotool
 xorg-dev
 yad
