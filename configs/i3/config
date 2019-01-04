@@ -9,18 +9,22 @@
 #
 # Please see https://i3wm.org/docs/userguide.html for a complete reference!
 
+exec_always --no-startup-id xrdb -load ~/.Xresources
+
 set $mod Mod4
 
 ### i3 colors
-set $border-color       #b6302f
-set $i-border-color     #23afbe
+set_from_resource $border-color color7 #ff00ff
+set_from_resource $i-border-color color0 #ff00ff
 set $indicator-color    #23afbe
 set $bg-color 	        #2f343f
 set $i-bg-color         #2f343f
 set $text-color         #f2f3f4
 set $i-text-color       #676E7D
-set $urgent-bg-color    #DE984E
-set $urgent-text-color  #805528
+set_from_resource $urgent-bg-color color1 #ff00ff
+set_from_resource $urgent-border-color color1 #ff00ff
+set_from_resource $urgent-text-color color7 #ff00ff
+
 
 
 # Font for window titles. Will also be used by the bar unless a different font
@@ -47,7 +51,7 @@ for_window [class="Yad"] floating enable
 client.focused          $border-color     $bg-color         $text-color         $indicator-color  $border-color
 client.focused_inactive $border-color     $i-bg-color       $i-text-color       $i-border-color  $i-border-color 
 client.unfocused        $border-color     $i-bg-color       $i-text-color       $i-border-color  $i-border-color 
-client.urgent           $urgent-bg-color  $urgent-bg-color  $urgent-text-color  $i-border-color  $i-border-color 
+client.urgent           $border-color     $urgent-bg-color  $urgent-text-color  $i-border-color  $urgent-border-color 
 
 client.background       #ffffff
 
@@ -285,7 +289,7 @@ exec_always --no-startup-id i3xinput
 ## Setup monitor layout
 exec_always --no-startup-id sh ~/.screenlayout/screen.sh
 ## Setup wallpaper
-exec_always --no-startup-id feh --bg-scale ~/Pictures/Firefox_wallpaper.png
+exec_always --no-startup-id feh --bg-scale ~/Pictures/Wallpaper.png
 exec --no-startup-id compton -f --config ~/.config/compton/compton.conf
 exec_always --no-startup-id setxkbmap -layout us,se -option 'grp:alt_shift_toggle,caps:swapescape'
 exec --no-startup-id xrandr --output DVI-D-0 --mode "1920x1080" -r 144 --primary --right-of HDMI-0

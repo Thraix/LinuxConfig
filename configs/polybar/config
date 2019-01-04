@@ -1,87 +1,87 @@
 [colors]
-background = #ffd8eff5
-background-alt = #ffb5dbe5
-foreground = #23afbe
-foreground-alt = #b6302f
+color0  = ${xrdb:color0:#ff00ff}
+color1  = ${xrdb:color1:#ff00ff}
+color2  = ${xrdb:color2:#ff00ff}
+color3  = ${xrdb:color3:#ff00ff}
+color4  = ${xrdb:color4:#ff00ff}
+color5  = ${xrdb:color5:#ff00ff}
+color6  = ${xrdb:color6:#ff00ff}
+color7  = ${xrdb:color7:#ff00ff}
+color8  = ${xrdb:color8:#ff00ff}
+color9  = ${xrdb:color9:#ff00ff}
+color10 = ${xrdb:color10:#ff00ff}
+color11 = ${xrdb:color11:#ff00ff}
+color12 = ${xrdb:color12:#ff00ff}
+color13 = ${xrdb:color13:#ff00ff}
+color14 = ${xrdb:color14:#ff00ff}
+color15 = ${xrdb:color15:#ff00ff}
 
-[bar/secondary]
-width = 100%:-14
-height = 30 
-radius = 0.0
-fixed-center = true 
-
-background = ${colors.background}
-foreground = ${colors.foreground}
-
-border-left-size = 7
-border-right-size = 7
-border-color = ${colors.background}
-
-module-margin-left = 1
-module-margin-right = 1
-
-font-0 = "DejaVu Sans Mono:pixelsize=10;1"
-font-1 = "Segoe UI Symbol:pixelsize=9;1"
-font-2 = "Font Awesome 5 Free-Regular:pixelsize=10;1"
-font-3 = "Font Awesome 5 Brands-Regular:pixelsize=10;1"
-font-4 = "Font Awesome 5 Free Solid:pixelsize=10;1"
-
-modules-left = i3
-modules-center = xwindow 
-modules-right = filesystem memory cpu temperature1 temperature2 xkeyboard eth pulseaudio popup-calendar 
-
-cursor-click = pointer
-cursor-scroll = ns-resize
-
-# SECONDARY ONLY
-monitor = ${env:MONITOR:HDMI-0}
-tray-position = right
-
+background = ${colors.color0} 
+background-alt = ${colors.color7}
+foreground = ${colors.color7}
+foreground-alt = ${colors.color15}
+background-alert=${colors.color1}
+foreground-alert=${colors.color0}
 
 [bar/primary]
-width = 100%:-14
-height = 30 
+monitor = ${env:MONITOR:}
+width = 100%:
+height = 25 
 radius = 0.0
 fixed-center = true 
+;separator = "%{F#0b5e68} | %{F-}"
 
 background = ${colors.background}
 foreground = ${colors.foreground}
 
-border-left-size = 7
-border-right-size = 7
-border-color = ${colors.background}
+line-size = 0
+spacing = 0
+border-left-size = 0
+border-right-size = 0
+border-top-size = 0
+border-color = #ffffffff
 
 module-margin-left = 1
 module-margin-right = 1
 
 font-0 = "DejaVu Sans Mono:pixelsize=10;1"
-font-1 = "Segoe UI Symbol:pixelsize=9;1"
+font-1 = "Segoe UI Symbol:pixelsize=10;1"
 font-2 = "Font Awesome 5 Free-Regular:pixelsize=10;1"
-font-3 = "Font Awesome 5 Brands-Regular:pixelsize=10;1"
-font-4 = "Font Awesome 5 Free Solid:pixelsize=10;1"
+font-3 = "Font Awesome 5 Free Solid:pixelsize=10;1"
+font-4 = "Font Awesome 5 Brands-Regular:pixelsize=10;1"
 
-modules-left = i3
-modules-center = xwindow 
-modules-right = filesystem memory cpu temperature1 temperature2 xkeyboard eth pulseaudio popup-calendar 
+modules-left = i3 xwindow
+modules-center = 
+modules-right = filesystem memory cpu temperature1 temperature2 eth wlan pulseaudio battery xkeyboard popup-calendar 
+
+tray-position = right
+tray-padding = 2
+tray-transparent=true
+tray-background = ${colors.background} 
 
 cursor-click = pointer
 cursor-scroll = ns-resize
-
-
-# PRIMARY MONITOR ONLY
-monitor = ${env:MONITOR:DVI-D-0}
 
 [module/xwindow]
 type = internal/xwindow
-label = %title:0:60:...%
+label = %title:0:100:...%
 
 [module/xkeyboard]
 type = internal/xkeyboard
 blacklist-0 = num lock
-format = <label-indicator> <label-layout>
+
+;format-prefix = " "
+;format-prefix-foreground = ${colors.foreground-alt}
+;format-prefix-underline = ${colors.secondary}
+
 label-layout = %layout%
-label-indicator-right-padding = 1
-label-indicator-foreground = ${colors.foreground-alt} 
+label-layout-underline = ${colors.foreground}
+
+label-indicator-padding = 2
+label-indicator-margin = 1
+label-indicator-background = ${colors.foreground}
+label-indicator-foreground= ${colors.background}
+label-indicator-underline = ${colors.foreground}
 
 [module/filesystem]
 type = internal/fs
@@ -102,13 +102,15 @@ wrapping-scroll = false
 ; Only show workspaces on the same output as the bar
 pin-workspaces = true
 
+label-mode-background = ${colors.foreground}
+label-mode-foreground = ${colors.background}
 label-mode-padding = 1
-label-mode-foreground = #000
-label-mode-background = ${colors.foreground-alt}
 
 ; focused = Active workspace on focused monitor
 label-focused = %index%
-label-focused-background = ${colors.background-alt}
+label-focused-background = ${colors.foreground}
+label-focused-underline= ${colors.foreground}
+label-focused-foreground = ${colors.background}
 label-focused-padding = 1
 
 ; unfocused = Inactive workspace on any monitor
@@ -118,11 +120,13 @@ label-unfocused-padding = 1
 ; visible = Active workspace on unfocused monitor
 label-visible = %index%
 label-visible-background = ${self.label-focused-background}
+label-visible-underline = ${self.label-focused-underline}
 label-visible-padding = ${self.label-focused-padding}
 
 ; urgent = Workspace with urgency hint set
 label-urgent = %index%
-label-urgent-background = ${colors.foreground-alt}
+label-urgent-background = ${colors.background-alert}
+label-urgent-foreground = ${colors.foreground-alert}
 label-urgent-padding = 1
 
 ; Separator in between workspaces
@@ -131,32 +135,39 @@ label-urgent-padding = 1
 [module/cpu]
 type = internal/cpu
 interval = 2
-format-prefix = "CPU: "
+format-prefix = " "
 format-prefix-foreground = ${colors.foreground-alt}
+format-underline = #f90000
 label = %percentage:2%%
 
 [module/memory]
 type = internal/memory
 interval = 2
-format-prefix = "RAM: "
+format-prefix = " "
 format-prefix-foreground = ${colors.foreground-alt}
+format-underline = ${colors.foreground}
 label = %percentage_used%%
 
 [module/wlan]
 type = internal/network
-interface = 
+interface = wlp3s0 
 interval = 3.0
 
-format-connected = <ramp-signal> <label-connected>
+format-connected-prefix= " "
+format-connected-prefix-foreground= ${colors.foreground-alt}
+format-connected = <label-connected>
+format-connected-underline = #9f78e1
 label-connected = %essid%
 
-format-disconnected =
+format-disconnected-prefix= " "
+format-disconnected-prefix-foreground= ${colors.foreground-alt}
+format-disconnected = "No Wifi"
+;format-disconnected = <label-disconnected>
+;format-disconnected-underline = ${self.format-connected-underline}
+;label-disconnected = %ifname% disconnected
+;label-disconnected-foreground = ${colors.foreground-alt}
 
-ramp-signal-0 = 
-ramp-signal-1 = 
-ramp-signal-2 = 
-ramp-signal-3 = 
-ramp-signal-4 = 
+ramp-signal-0 = 
 ramp-signal-foreground = ${colors.foreground-alt}
 
 [module/eth]
@@ -169,6 +180,20 @@ label-connected =
 label-disconnected = ""
 label-disconnected-foreground = ${colors.foreground-alt}
 
+[module/time]
+type = internal/date
+interval = 1
+date = "%H:%M"
+label = %date%
+date-alt = "Week %U %A %d %b %Y %H:%M:%S"
+
+[module/date]
+type = internal/date
+interval = 1
+date = "[ Week %U %A %d %b %Y ] [ %H:%M:%S ]"
+
+label = %date% %time%
+
 [module/pulseaudio]
 type = internal/pulseaudio
 
@@ -177,15 +202,31 @@ format-volume-prefix = ""
 format-volume-prefix-foreground = ${colors.foreground-alt}
 label-prefix =  
 label-volume = %percentage:3%%
+label-volume-foreground = ${colors.foreground}
 
-label-muted =  muted
+format-muted = <label-muted>
+format-muted-prefix = " " 
+format-muted-prefix-foreground= ${colors.foreground-alt}
+label-muted = muted
+label-muted-foreground = ${colors.foreground}
 
+bar-volume-width = 11
+bar-volume-foreground-0 = ${colors.foreground-alt} 
+bar-volume-gradient = false
+bar-volume-indicator = |
+bar-volume-indicator-font = 1
+bar-volume-fill = ─
+bar-volume-fill-font = 1
+bar-volume-empty = ─
+bar-volume-empty-font = 1
+bar-volume-empty-foreground = ${colors.foreground}
 
 [module/temperature1]
 type = internal/temperature
 thermal-zone = 0
 
 format = <label>
+format-underline = #f50a4d
 
 label = %temperature-c%
 hwmon-path = /sys/devices/platform/coretemp.0/hwmon/hwmon1/temp1_input
@@ -195,6 +236,7 @@ type = internal/temperature
 thermal-zone = 0
 
 format = <label>
+format-underline = #f50a4d
 
 label = %temperature-c%
 hwmon-path = /sys/devices/platform/coretemp.0/hwmon/hwmon2/temp1_input
@@ -204,6 +246,51 @@ type = custom/script
 exec = "date +%H:%M"
 interval = 5
 click-left = ~/.config/polybar-scripts/popup-calendar.sh
+
+[module/battery]
+type = internal/battery
+format-charging = <animation-charging> <label-charging>
+label-charging = %percentage%%
+
+label-full-prefix= 
+label-full = %percentage%%
+
+; Only applies if <animation-charging> is used
+animation-charging-foreground=${colors.foreground-alt}
+animation-charging-0 = 
+animation-charging-1 = 
+animation-charging-2 = 
+animation-charging-3 = 
+animation-charging-4 = 
+
+; Framerate in milliseconds
+animation-charging-framerate = 750
+format-discharging = <ramp-capacity> <label-discharging>
+label-discharging = %percentage%%
+ramp-capacity-foreground=${colors.foreground-alt}
+ramp-capacity-0 = 
+ramp-capacity-1 = 
+ramp-capacity-2 = 
+ramp-capacity-3 = 
+ramp-capacity-4 = 
+; This is useful in case the battery never reports 100% charge
+full-at = 99
+
+; Use the following command to list batteries and adapters:
+; $ ls -1 /sys/class/power_supply/
+battery = BAT1
+adapter = ADP1
+
+; If an inotify event haven't been reported in this many
+; seconds, manually poll for new values.
+;
+; Needed as a fallback for systems that don't report events
+; on sysfs/procfs.
+;
+; Disable polling by setting the interval to 0.
+;
+; Default: 5
+poll-interval = 5
 
 [settings]
 screenchange-reload = true
