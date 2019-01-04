@@ -1,6 +1,5 @@
 autoconf
 automake
-build-essential`
 clang
 cmake
 cmake-data
@@ -10,7 +9,9 @@ curl
 feh
 g++
 gimp
+git
 gnutls-bin
+gperf
 gtk-doc-tools
 i3
 i3-wm
@@ -44,7 +45,7 @@ libxcb-xrm0
 libxcb-xrm-dev
 libxkbcommon-dev
 libxkbcommon-x11-dev
-libxml2-utils gperf
+libxml2-utils
 libyajl-dev
 neofetch
 pkg-config
