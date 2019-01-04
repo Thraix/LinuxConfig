@@ -58,7 +58,7 @@ client.background       #ffffff
 for_window [class="^.*"] border pixel 1 
 
 # negative number to have same top margin as smart gaps
-gaps top -7
+gaps top -6
 gaps inner 7 
 smart_gaps on
 

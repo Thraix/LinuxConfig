@@ -49,7 +49,7 @@ chsh -s $(which zsh)
 echo Installing base16
 git clone https://github.com/chriskempson/base16-shell.git ~/.config/base16-shell
 
-sh ~/.config/base16-shell/scripts/base16-material-palenight.sh
+sh ~/.config/base16-shell/scripts/base16-material-eighties.sh
 
 # i3lock-fancy
 echo Installing i3lock-fancy
@@ -72,6 +72,10 @@ sudo mkdir -p /lib/terminfo/x; sudo ln -s \
 
 sudo update-alternatives --install /usr/bin/x-terminal-emulator x-terminal-emulator /usr/local/bin/termite 60
 cd ..
+
+git clone git@github.com:chriskempson/base16-xresources.git
+cat base16-xresources/xresources/base16-eighties.Xresources >> ~/.Xresources
+xrdb -load ~/.Xresources
 
 # install configs and scripts
 echo Installing configs and scripts
