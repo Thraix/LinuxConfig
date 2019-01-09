@@ -24,13 +24,14 @@ Plugin 'Valloric/YouCompleteMe'
 Plugin 'chrisbra/Colorizer'
 
 Plugin 'chriskempson/base16-vim'
+Plugin 'Chiel92/vim-autoformat'
 
 call vundle#end()
 
 filetype plugin indent on
 
 set backspace=indent,eol,start
-set conceallevel=2
+set conceallevel=0
 set cursorline
 set lazyredraw
 set noshowmode
@@ -57,8 +58,6 @@ set smartindent
 set tabstop=2        " tab width is 4 spaces
 set shiftwidth=2     " indent also with 4 spaces
 set expandtab        " expand tabs to spaces
-
-set textwidth=120
 
 syntax enable
 set background=dark
@@ -89,8 +88,11 @@ noremap <C-q> :q<CR>
 map <F12> :!make<CR>
 noremap <S-tab> gg=G''
 noremap <C-G> :YcmCompleter GoTo<CR>
+
 set wrap
 set linebreak
+set textwidth=0
+set wrapmargin=0
 
 map <left> <nop>
 map <right> <nop>
@@ -126,6 +128,34 @@ endfunction
 if filereadable(expand("~/.vimrc_background"))
   let base16colorspace=256
   source ~/.vimrc_background
+endif
+
+" Don't indent namespace and template
+function! CppNoNamespaceAndTemplateIndent()
+    let l:cline_num = line('.')
+    let l:cline = getline(l:cline_num)
+    let l:pline_num = prevnonblank(l:cline_num - 1)
+    let l:pline = getline(l:pline_num)
+    while l:pline =~# '\(^\s*{\s*\|^\s*//\|^\s*/\*\|\*/\s*$\)'
+        let l:pline_num = prevnonblank(l:pline_num-1)
+        let l:pline = getline(l:pline_num)
+    endwhile
+    let l:retv = cindent('.')
+    let l:pindent = indent(l:pline_num)
+    if l:pline =~# '^\s*template\s*\s*'
+        let l:retv = l:pindent
+    elseif l:pline =~# '\s*typename\s*.*,\s*$'
+        let l:retv = l:pindent
+    elseif l:cline =~# '^\s*>\s*$'
+        let l:retv = l:pindent - &shiftwidth
+    elseif l:pline =~# '\s*typename\s*.*>\s*$'
+        let l:retv = l:pindent - &shiftwidth
+    endif
+    return l:retv
+endfunction
+
+if has("autocmd")
+    autocmd BufEnter *.{cc,cxx,cpp,h,hh,hpp,hxx} setlocal indentexpr=CppNoNamespaceAndTemplateIndent()
 endif
 
 hi Normal ctermbg=none
