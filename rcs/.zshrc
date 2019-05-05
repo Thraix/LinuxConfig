@@ -98,6 +98,6 @@ BASE16_SHELL="$HOME/.config/base16-shell/"
     [ -s "$BASE16_SHELL/profile_helper.sh" ] && \
         eval "$("$BASE16_SHELL/profile_helper.sh")"
 
-alias scrot='scrot '"'"'~/Pictures/Screenshots/screenshot_%Y-%m-%d_%H-%M-%S_$wx$h.png'"'"' '
+alias scrot="scrot"
 stty -ixon
 alias g++17="g++ -std=c++17 -pedantic -Wextra -Wall"

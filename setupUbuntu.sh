@@ -60,7 +60,7 @@ sudo make install
 cd ..
 
 echo Installing Termite
-git clone --recursive https://github.com/thestinger/termite.git
+git clone --recursive https://github.com/thraix/termite.git
 git clone https://github.com/thestinger/vte-ng.git
 
 cd vte-ng && ./autogen.sh && make && sudo make install

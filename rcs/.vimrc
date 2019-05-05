@@ -95,7 +95,7 @@ noremap <C-o> :NERDTree %<CR>
 noremap <C-q> :q<CR>
 noremap <C-w> :w<CR>
 map <F12> :!make<CR>
-noremap <S-tab> gg=G''
+noremap <S-tab> gg=G''zz
 noremap <C-G> :YcmCompleter GoTo<CR>
 noremap n nzz
 noremap N Nzz
