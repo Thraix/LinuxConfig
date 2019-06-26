@@ -7,7 +7,9 @@ call vundle#begin()
 
 Plugin 'VundleVim/Vundle.vim'
 
+Plugin 'elzr/vim-json'
 Plugin 'Yggdroot/indentLine'
+Plugin 'gu-fan/simpleterm.vim'
 
 Plugin 'pangloss/vim-javascript' 
 Plugin 'leafgarland/typescript-vim'
@@ -25,20 +27,22 @@ Plugin 'Valloric/YouCompleteMe'
 Plugin 'chrisbra/Colorizer'
 Plugin 'rdnetto/YCM-Generator'
 
-Plugin 'chriskempson/base16-vim'
+Plugin 'danielwe/base16-vim'
 Plugin 'Chiel92/vim-autoformat'
 Plugin 'OmniSharp/omnisharp-vim'
 Plugin 'tpope/vim-dispatch'
 Plugin 'Shougo/vimproc.vim'
-
 
 call vundle#end()
 
 filetype plugin indent on
 
 set backspace=indent,eol,start
-let g:indentLine_conceallevel = 0
+
+let g:indentLine_conceallevel=2
+let g:vim_json_syntax_conceal = 0
 set conceallevel=0
+
 set cursorline
 set lazyredraw
 set noshowmode
@@ -94,7 +98,7 @@ noremap <C-n> :tabm +1<CR>
 noremap <C-o> :NERDTree %<CR>
 noremap <C-q> :q<CR>
 noremap <C-w> :w<CR>
-map <F12> :!make<CR>
+map <F12> :Sexe make<CR>
 noremap <S-tab> gg=G''zz
 noremap <C-G> :YcmCompleter GoTo<CR>
 noremap n nzz
@@ -213,5 +217,4 @@ let g:syntastic_javascript_eslint_args = ['--fix']
 let g:syntastic_mode_map = { 'mode': 'passive'}
 autocmd FileType cs let g:syntastic_mode_map = { 'mode': 'active'}
 let g:syntastic_cs_checkers = ['code_checker']
-let g:vim_json_syntax_conceal = 0
 let g:OmniSharp_server_use_mono = 1
