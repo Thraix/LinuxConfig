@@ -53,7 +53,7 @@ font-4 = "Font Awesome 5 Brands-Regular:pixelsize=10;1"
 
 modules-left = i3 xwindow
 modules-center = 
-modules-right = filesystem memory cpu temperature1 temperature2 eth wlan pulseaudio battery xkeyboard popup-calendar 
+modules-right = filesystem memory cpu temperature1 temperature2 temperature3 eth wlan vpn pulseaudio battery xkeyboard popup-calendar
 
 cursor-click = pointer
 cursor-scroll = ns-resize
@@ -88,7 +88,7 @@ font-4 = "Font Awesome 5 Brands-Regular:pixelsize=10;1"
 
 modules-left = i3 xwindow
 modules-center = 
-modules-right = filesystem memory cpu temperature1 temperature2 eth wlan pulseaudio battery xkeyboard popup-calendar 
+modules-right = filesystem memory cpu temperature1 temperature2 temperature3 eth wlan vpn pulseaudio battery xkeyboard popup-calendar
 
 tray-position = right
 tray-padding = 2
@@ -187,7 +187,7 @@ label = %percentage_used%%
 
 [module/wlan]
 type = internal/network
-interface = wlp3s0 
+interface = wlo1
 interval = 3.0
 
 format-connected-prefix= " "
@@ -278,11 +278,26 @@ format-underline = #f50a4d
 label = %temperature-c%
 hwmon-path = /sys/devices/platform/coretemp.0/hwmon/hwmon2/temp1_input
 
+[module/temperature3]
+type = internal/temperature
+thermal-zone = 0
+
+format = <label>
+format-underline = #f50a4d
+
+label = %temperature-c%
+hwmon-path = /sys/devices/platform/coretemp.0/hwmon/hwmon3/temp1_input
+
 [module/popup-calendar]
 type = custom/script
 exec = "date +%H:%M"
 interval = 5
-click-left = ~/.config/polybar-scripts/popup-calendar.sh
+click-left = popup-calendar
+
+[module/vpn]
+type = custom/script
+exec = "getvpn"
+interval = 5
 
 [module/battery]
 type = internal/battery
