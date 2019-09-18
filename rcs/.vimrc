@@ -7,51 +7,37 @@ call vundle#begin()
 
 Plugin 'VundleVim/Vundle.vim'
 
-Plugin 'elzr/vim-json'
+" Utilities
 Plugin 'Yggdroot/indentLine'
-Plugin 'gu-fan/simpleterm.vim'
-
-Plugin 'pangloss/vim-javascript' 
-Plugin 'leafgarland/typescript-vim'
-Plugin 'lervag/vimtex'
-
 Plugin 'scrooloose/nerdtree'
+Plugin 'tpope/vim-surround'
+Plugin 'tpope/vim-commentary'
 
-Plugin 'prettier/vim-prettier'
-
-Plugin 'vim-syntastic/syntastic'
+" Colorscheme for glsl
 Plugin 'tikhomirov/vim-glsl'
 
-Plugin 'Valloric/YouCompleteMe'
+" Colorscheme and shows json errors
+Plugin 'elzr/vim-json'
 
-Plugin 'chrisbra/Colorizer'
-Plugin 'rdnetto/YCM-Generator'
-
+" Base16 colorscheme for vim
 Plugin 'danielwe/base16-vim'
-Plugin 'Chiel92/vim-autoformat'
-Plugin 'OmniSharp/omnisharp-vim'
-Plugin 'tpope/vim-dispatch'
-Plugin 'Shougo/vimproc.vim'
+
+" C++ Plugins for formatting and auto completion
+Plugin 'rdnetto/YCM-Generator'
+Plugin 'Valloric/YouCompleteMe'
+Plugin 'rhysd/vim-clang-format'
+
+" LaTeX autocompletion?
+Plugin 'lervag/vimtex'
 
 call vundle#end()
 
 filetype plugin indent on
 
-set backspace=indent,eol,start
-
 let g:indentLine_conceallevel=2
-let g:vim_json_syntax_conceal = 0
-set conceallevel=0
-
-set cursorline
-set lazyredraw
-set noshowmode
-set showcmd
-set mouse=a
 
 set langmenu=en_US
 let $LANG = 'en_US'
-
 
 source $VIMRUNTIME/delmenu.vim
 source $VIMRUNTIME/menu.vim
@@ -62,74 +48,108 @@ set enc=utf-8
 set fenc=utf-8
 set termencoding=utf-8
 
-set nocompatible
-set autoindent
-set smartindent
 
-
-set tabstop=2        " tab width is 4 spaces
-set shiftwidth=2     " indent also with 4 spaces
-set expandtab        " expand tabs to spaces
-
+" Colorscheme
 syntax enable
 set background=dark
 set t_Co=256
-"colorscheme darkblue
 
+if filereadable(expand("~/.vimrc_background"))
+  let base16colorspace=256
+  source ~/.vimrc_background
+endif
 
-"let g:solarized_termtrans=1
-"let g:solarized_termcolors=256
-"
-" colorscheme solarized 
+" Show error if end of line is whitespace
+match ExtraWhitespace /\s\+$/
 
-set number
-set relativenumber
-
+" Switch header/cpp
 noremap <C-s> :call SwitchSourceHeader()<CR>
 
-set comments=sl:/*,mb:\ *,elx:\ */
-
+" Move current buffer to next/prev tab
 noremap <C-h> :tabp<CR>
 noremap <C-l> :tabn<CR>
-noremap <C-k> :m .-2<CR>==
-noremap <C-j> :m .+1<CR>==
+" Move around tabs
 noremap <C-b> :tabm -1<CR>
 noremap <C-n> :tabm +1<CR>
+
+" Open nerdtree in directory of the current file
 noremap <C-o> :NERDTree %<CR>
 noremap <C-q> :q<CR>
 noremap <C-w> :w<CR>
-map <F12> :Sexe make<CR>
+map <F12> :!make -j8<CR>
+map <C-S-b> :!makegen -j8<CR>
+
+" Format the code and center cursor
 noremap <S-tab> gg=G''zz
 noremap <C-G> :YcmCompleter GoTo<CR>
+
+" Center when going to next search
 noremap n nzz
 noremap N Nzz
-" First search center
+
+
+" Make search appear in the center of the screen
 cnoremap <expr> <CR> getcmdtype() =~ '[/?]' ? '<CR>zz' : '<CR>'
 
-set wrap
+set comments=sl:/*,mb:\ *,elx:\ */
+set conceallevel=0              " Disable all concealments
+set backspace=indent,eol,start
+set clipboard=unnamedplus       " Save all clipboard data to OS clipboard?
+set cursorline                  " Show a cursor line
+set lazyredraw                  " Don't redraw when executing macros
+set showmode                    " Show commands allowed in insertmode
+set mouse=a                     " Allow mouse in terminal
+set nocompatible                " No need to make Vim Vi-compatible
+set autoindent                  " Copy indent from previous line when using o-command
+set smartindent                 " Mainly follows c-style indentation when typing code
+set tabstop=2                   " tab width is 2 spaces
+set shiftwidth=2                " indent also with 2 spaces
+set expandtab                   " expand tabs to spaces
+set wrap                        " Make lines wrap if they go out of the screen (only visually)
 set linebreak
 set textwidth=0
 set wrapmargin=0
+set showcmd                     " Show what commands are currently being writter (eg 10"+yy)
+set wildmenu                    " Show tab autocompletion
+set number                      " Show which line number you are on
+set relativenumber              " Show all other lines relative to current one
 
+" Set shader files to glsl file format
+autocmd! BufNewFile,BufRead *.shader set filetype=glsl
+
+" Disable arrow keys, because we are Vim users right?
 map <left> <nop>
 map <right> <nop>
 map <up> <nop>
 map <down> <nop>
+" Sometimes I type swedish in vim so this bind enters the command line on swedish keyboard.
 noremap Ö :
+
+" There is probably a reason why I added these manually
 noremap h <left>
 noremap j g<down>
 noremap k g<up>
 noremap l <right>
 
+" Shows indentation as a pipe
 let g:indentLine_char = '|'
 
+" Switches between header and source files.
+" If in a source file and the h file doesn't exist nothing happens.
+" Should maybe change it to open .h file or .cpp file.
 function! SwitchSourceHeader()
-  "update!
   if (expand ("%:e") == "cpp" || expand("%:e") == "cc" || expand("%:e") == "c")
     if filereadable(join([expand("%<"),".h"],""))
       tab drop %:r.h
     elseif filereadable(join([expand("%<"),".hpp"],""))
       tab drop %:r.hpp
+    else
+      let l:confirmed = confirm("Cpp file doesn't exist. Do you want to create it?", "&Yes\n&No\nYes as &hpp", 3)
+      if l:confirmed == 1
+        tab drop %:r.h
+      elseif l:confirmed == 3
+        tab drop %:r.hpp
+      endif
     end
   elseif (expand ("%:e") == "hpp" || expand("%:e") == "h")
     if filereadable(join([expand("%<"),".cc"],""))
@@ -138,83 +158,73 @@ function! SwitchSourceHeader()
       tab drop %:r.cpp
     elseif filereadable(join([expand("%<"),".c"],""))
       tab drop %:r.c
+    else
+      let l:confirmed = confirm("Cpp file doesn't exist. Do you want to create it?", "&Yes\n&No\nYes as &c", 3)
+      if l:confirmed == 1
+        tab drop %:r.cpp
+      elseif l:confirmed == 3
+        tab drop %:r.c
+      endif
     endif
+  else
+    echohl ErrorMsg
+    echo 'Current file is not a C++ file'
+    echohl None
   endif
 endfunction
-
-if filereadable(expand("~/.vimrc_background"))
-  let base16colorspace=256
-  source ~/.vimrc_background
-endif
-
-" Don't indent namespace and template
-function! CppFormatting()
-  let l:cline_num = line('.')
-  let l:cline = getline(l:cline_num)
-  let l:pline_num = prevnonblank(l:cline_num - 1)
-  let l:pline = getline(l:pline_num)
-
-  let l:retv = cindent('.')
-  let l:pindent = indent(l:pline_num)
-
-  if l:cline =~# '^\s*\(#\|\};\|private:\|public:\|protected:\)\s*$'
-    let l:retv = l:retv 
-  elseif l:cline =~# '^\s*->'
-    let l:retv = l:pindent + &shiftwidth
-  elseif l:pline =~# '^\s*\(private:\|public:\|protected:\)\s*$'
-    let l:retv = l:pindent + &shiftwidth
-  elseif l:pline =~# '^\s*template\s*<.*>\s*$'
-    let l:retv = l:pindent
-  elseif l:pline =~# '\s*typename\s*.*,\s*$'
-    let l:retv = l:pindent
-  elseif l:cline =~# '^\s*>\s*$'
-    let l:retv = l:pindent - &shiftwidth
-  elseif l:pline =~# '\s*typename\s*.*>\s*$'
-    let l:retv = l:pindent - &shiftwidth
-  elseif l:pline=~# '^\s*->'
-    let l:retv = l:pindent - &shiftwidth
-  endif
-  return l:retv
-endfunction
-
-if has("autocmd")
-  autocmd BufEnter *.{cc,cxx,cpp,h,hh,hpp,hxx} setlocal indentexpr=CppFormatting()
-endif
 
 " Writes the .cpp.h file into the current line and replace CLASS_NAME with the current filename!
 nnoremap ,cpp<CR> :-1read $HOME/.vim/.cpp.h<CR>:%s/CLASS_NAME/\=expand("%:t:r")/g<CR>
 nnoremap ,engine<CR> :-1read $HOME/.vim/.engine.h<CR>:%s/CLASS_NAME/\=expand("%:t:r")/g<CR>
 
-hi Normal ctermbg=none
-set showcmd
-set wildmenu
-
+" Open vimrc when typing Vimrc
 :command! Vimrc :tabe ~/.vimrc
 
+" Setup swp files in their own directory in order to avoid them existing inside projects I'm working on
 set backupdir=~/.vim/backup//
 set directory=~/.vim/swp//
 set undodir=~/.vim/undo//
 
-
+" YouCompleteMe configurations
 let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
 let g:ycm_confirm_extra_conf = 0
 let g:ycm_autoclose_preview_window_after_completion = 1
 let g:ycm_autoclose_preview_window_after_insertion = 1
 let g:ycm_goto_buffer_command="new-or-existing-tab"
-let g:javascript_plugin_jsdoc = 1
 
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-
+" NERDTree configuration
 let NERDTreeQuitOnOpen=1
 
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_javascript_checkers = ['eslint']
-let g:syntastic_javascript_eslint_exe = 'npm run lint --'
-let g:syntastic_javascript_eslint_args = ['--fix']
-let g:syntastic_mode_map = { 'mode': 'passive'}
-autocmd FileType cs let g:syntastic_mode_map = { 'mode': 'active'}
-let g:syntastic_cs_checkers = ['code_checker']
-let g:OmniSharp_server_use_mono = 1
+" Clang format
+let g:clang_format#style_options = {
+      \ "AccessModifierOffset": -2,
+      \ "AllowShortIfStatementsOnASingleLine": "false",
+      \ "AllowShortFunctionsOnASingleLine": "false",
+      \ "IndentWidth": 2,
+      \ "BreakBeforeBraces": "Custom",
+      \ "BraceWrapping" : {
+      \       "AfterClass": "true",
+      \       "AfterControlStatement": "true",
+      \       "AfterEnum": "true",
+      \       "AfterFunction": "true",
+      \       "AfterNamespace": "true",
+      \       "AfterObjCDeclaration": "true",
+      \       "AfterStruct": "true",
+      \       "AfterUnion": "true",
+      \       "AfterExternBlock": "true",
+      \       "BeforeCatch": "true",
+      \       "BeforeElse": "true",
+      \       "IndentBraces": "false",
+      \       "SplitEmptyFunction": "false",
+      \       "SplitEmptyRecord": "false",
+      \       "SplitEmptyNamespace": "false",
+      \     },
+      \ "CompactNamespaces" : "true",
+      \ "ConstructorInitializerAllOnOneLineOrOnePerLine": "true",
+      \ "ConstructorInitializerIndentWidth": 2,
+      \ "ContinuationIndentWidth": 2,
+      \ "FixNamespaceComments": "false",
+      \ "MaxEmptyLinesToKeep": 2,
+      \ "NamespaceIndentation": "All",
+      \ "UseTab": "Never"
+      \}
