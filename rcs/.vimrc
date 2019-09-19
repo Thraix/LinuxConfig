@@ -34,7 +34,8 @@ call vundle#end()
 
 filetype plugin indent on
 
-let g:indentLine_conceallevel=2
+let g:indentLine_conceallevel=2 " Show indentation lines
+let g:vim_json_syntax_conceal=0 " Disable concealments in json files
 
 set langmenu=en_US
 let $LANG = 'en_US'
