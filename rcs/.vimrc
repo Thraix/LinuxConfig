@@ -12,6 +12,7 @@ Plugin 'Yggdroot/indentLine'
 Plugin 'scrooloose/nerdtree'
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-commentary'
+Plugin 'tpope/vim-repeat'
 
 " Colorscheme for glsl
 Plugin 'tikhomirov/vim-glsl'
@@ -64,7 +65,6 @@ hi link YcmErrorSection Error
 
 " Show error if end of line is whitespace
 hi link ExtraWhitespace Error
-match ExtraWhitespace /\s\+$/
 
 hi YcmWarningSign ctermfg=18 ctermbg=3
 hi YcmWarningSection ctermfg=18 ctermbg=3
@@ -83,8 +83,7 @@ noremap <C-n> :tabm +1<CR>
 noremap <C-o> :NERDTree %<CR>
 noremap <C-q> :q<CR>
 noremap <C-w> :w<CR>
-map <F12> :!make -j8<CR>
-map <C-S-b> :!makegen -j8<CR>
+map <F12> :!makegen<CR>
 
 " Format the code and center cursor
 noremap <S-tab> gg=G''zz
@@ -268,4 +267,5 @@ endfunction
 
 if has("autocmd")
   autocmd BufEnter *.{cc,cxx,cpp,h,hh,hpp,hxx} setlocal indentexpr=CppFormatting()
+  autocmd BufEnter *.{cc,cxx,cpp,h,hh,hpp,hxx} match ExtraWhitespace /\s\+$/
 endif
