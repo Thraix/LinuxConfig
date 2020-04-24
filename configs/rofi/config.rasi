@@ -28,9 +28,9 @@
 	/*base07: #00BCD4;*/
 
 	spacing: 0;
-	background-color: transparent;
+	background-color: @base00;
 
-	font: "DejaVu Sans Mono 10";
+	font: "DejaVu Sans 13";
 }
 
 window {
@@ -40,29 +40,34 @@ window {
 }
 
 mainbox {
-	children: [inputbar, message, sidebar, listview];
+	children: [inputbar, message, listview];
 	spacing: 0px;
-	padding: 10px 0px;
-	border: 1px;
-	border-color: @base07;
+	/* border: 10px; */
+	/* border-color: @base03; */
+	border: 2px;
+	border-color: @base02;
 }
 
 inputbar {
-	padding: 0 5px 5px 5px;
-	children: [prompt, textbox-prompt-colon, entry, case-indicator];
+  background-color: @base01;
+	padding: 10;
+	children: [prompt, textbox-prompt-colon, entry];
 }
 
 prompt {
+  background-color: inherit;
 	text-color: @base07;
 }
 
 textbox-prompt-colon {
-	expand: false;
+  background-color: inherit;
+  expand: false;
 	margin: 0 1ch 0 0;
 	text-color: @base07;
 }
 
 entry {
+  background-color: inherit;
 	text-color: @base07;
 }
 
@@ -85,43 +90,21 @@ button selected {
 }
 
 listview {
-	margin: 0 5px 0 0px;
+  /* border: 1 0 0 0; */
+  /* border-color: @base03; */
 }
 
 element {
-	padding: 2px;
+	padding: 10px;
 	highlight: bold underline;
 }
 
 element normal {
-	background-color: transparent;
+	background-color: @base00;
+  text-color: @base05;
 }
 
 element selected {
-	background-color: @base07;
-  text-color: @base0A;
-}
-
-element alternate {
-	/*background-color: @base03;*/
-}
-
-element normal normal, element selected normal, element alternate normal {
-	text-color: @base07;
-}
-
-element normal normal, element alternate normal{
-	text-color: @base07;
-}
-
-element selected normal {
-	text-color: @base00;
-}
-
-element normal urgent, element selected urgent, element alternate urgent {
-	text-color: @base0F;
-}
-
-element normal active, element selected active, element alternate active {
-	text-color: @base0B;
+	background-color: @base02;
+  text-color: @base05;
 }
