@@ -2,12 +2,12 @@
 
 killall -q polybar
 if type "xrandr"; then
-  for m in $(xrandr --query | grep " connected" | cut -d" " -f1); do
-    echo $m
-    if [ "$m" = "DVI-D-0" ]; then
-      MONITOR=$m polybar --reload primary &
+  xrandr --query | grep " connected" | while read -r line; do
+    primary=$(echo $line | grep "primary")
+    if [ -z "$primary" ]; then
+      MONITOR=$(echo $line | awk '{print $1}') polybar --reload general &
     else
-      MONITOR=$m polybar --reload general &
+      MONITOR=$(echo $line | awk '{print $1}') polybar --reload primary &
     fi
   done
 else
