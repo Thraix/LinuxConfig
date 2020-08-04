@@ -1,0 +1,114 @@
+/*
+ * ROFI color theme
+ *
+ * Based on Base16 Material Color Scheme (https://github.com/ntpeters/base16-materialtheme-scheme)
+ *
+ * User: Tomaszal
+ * Copyright: Tomas Zaluckij
+ */
+
+* {
+  base00: #2d2d2d;
+  base01: #393939;
+  base02: #515151;
+  base03: #747369;
+  base04: #a09f93;
+  base05: #d3d0c8;
+  base06: #e8e6df;
+  base07: #f2f0ec;
+  base08: #f2777a;
+  base09: #f99157;
+  base0A: #ffcc66;
+  base0B: #99cc99;
+  base0C: #66cccc;
+  base0D: #6699cc;
+  base0E: #cc99cc;
+  base0F: #d27b53;
+
+	/*base07: #00BCD4;*/
+
+	spacing: 0;
+	background-color: transparent;
+
+	font: "DejaVu Sans 13";
+  position: north west;
+}
+
+window {
+	transparency: "real";
+	background-color: @base00;
+  location: north west;
+  x-offset: 7;
+  y-offset: 32;
+}
+
+mainbox {
+	children: [inputbar, message, listview];
+	spacing: 0px;
+	/* border: 10px; */
+	/* border-color: @base03; */
+	border: 2px;
+	border-color: @base02;
+}
+
+inputbar {
+  background-color: @base01;
+	padding: 10;
+	children: [prompt, textbox-prompt-colon, entry];
+}
+
+prompt {
+  background-color: inherit;
+	text-color: @base05;
+}
+
+textbox-prompt-colon {
+  background-color: inherit;
+  expand: false;
+	margin: 0 1ch 0 0;
+	text-color: @base05;
+}
+
+entry {
+  background-color: inherit;
+	text-color: @base05;
+}
+
+case-indicator {
+	text-color: @base0F;
+}
+
+sidebar, message {
+	border: 1px 0;
+	border-color: @base05;
+}
+
+button, textbox {
+	background-color: @base03;
+	text-color: @base05;
+}
+
+button selected {
+	background-color: @base05;
+}
+
+listview {
+  /* border: 1 0 0 0; */
+  /* border-color: @base03; */
+  columns: 2;
+}
+
+element {
+	padding: 10px;
+	highlight: bold underline;
+}
+
+element normal {
+	background-color: @base00;
+  text-color: @base05;
+}
+
+element selected {
+	background-color: @base02;
+  text-color: @base05;
+}
