@@ -24,7 +24,7 @@ Plugin 'elzr/vim-json'
 Plugin 'danielwe/base16-vim'
 
 " C++ Plugins for formatting and auto completion
-Plugin 'rdnetto/YCM-Generator'
+Plugin 'thraix/YCM-Generator'
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'rhysd/vim-clang-format'
 
@@ -50,7 +50,6 @@ set enc=utf-8
 set fenc=utf-8
 set termencoding=utf-8
 
-
 " Colorscheme
 syntax enable
 set background=dark
@@ -65,6 +64,7 @@ hi link YcmErrorSection Error
 
 " Show error if end of line is whitespace
 hi link ExtraWhitespace Error
+hi link TexFix Error
 
 hi YcmWarningSign ctermfg=18 ctermbg=3
 hi YcmWarningSection ctermfg=18 ctermbg=3
@@ -87,7 +87,8 @@ map <F12> :!makegen<CR>
 
 " Format the code and center cursor
 noremap <S-tab> gg=G''zz
-noremap <C-G> :YcmCompleter GoTo<CR>
+noremap <C-G> :YcmCompleter GoToInclude<CR>
+noremap <C-I> :YcmCompleter GetDoc<CR>
 
 " Center when going to next search
 noremap n nzz
@@ -268,4 +269,8 @@ endfunction
 if has("autocmd")
   autocmd BufEnter *.{cc,cxx,cpp,h,hh,hpp,hxx} setlocal indentexpr=CppFormatting()
   autocmd BufEnter *.{cc,cxx,cpp,h,hh,hpp,hxx} match ExtraWhitespace /\s\+$/
+  autocmd BufEnter * let b:ycm_hover=''
+  autocmd BufEnter *.{fig,tex} match TexFix /\\fix{.\{-}}/
+  autocmd BufEnter *.{fig,tex} set conceallevel=0
+  autocmd BufEnter *.{fig} set filetype=tex
 endif

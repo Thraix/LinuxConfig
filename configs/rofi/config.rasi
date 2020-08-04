@@ -56,19 +56,19 @@ inputbar {
 
 prompt {
   background-color: inherit;
-	text-color: @base07;
+	text-color: @base05;
 }
 
 textbox-prompt-colon {
   background-color: inherit;
   expand: false;
 	margin: 0 1ch 0 0;
-	text-color: @base07;
+	text-color: @base05;
 }
 
 entry {
   background-color: inherit;
-	text-color: @base07;
+	text-color: @base05;
 }
 
 case-indicator {
@@ -77,16 +77,16 @@ case-indicator {
 
 sidebar, message {
 	border: 1px 0;
-	border-color: @base07;
+	border-color: @base05;
 }
 
 button, textbox {
 	background-color: @base03;
-	text-color: @base07;
+	text-color: @base05;
 }
 
 button selected {
-	background-color: @base07;
+	background-color: @base05;
 }
 
 listview {

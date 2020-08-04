@@ -1,0 +1,1 @@
+pkill $(ps aux | grep thraix | awk '{print $11}' | awk -F '/' '{print $NF}' | rofi -i -dmenu -p "Kill") && notify-send failed

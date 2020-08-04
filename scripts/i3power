@@ -1,0 +1,35 @@
+#!/bin/sh
+
+menu=(
+  'Lock'
+  'Log Out'
+  'Suspend'
+  'Reboot'
+  'Hibernate'
+  'Shutdown'
+)
+
+result=$(printf "%s\n" "${menu[@]}" | rofi -i -dmenu -p "Power" -location 3 -width 10 -l 6 -yoffset 25 -theme-str  'inputbar { enabled: false; }' -me-accept-entry MousePrimary -me-select-entry MouseSecondary)
+
+echo ${menu[0]}
+
+case "$result" in
+    ${menu[0]})
+        i3exit lock
+        ;;
+    ${menu[1]})
+        i3exit logout
+        ;;
+    ${menu[2]})
+        i3exit suspend
+        ;;
+    ${menu[3]})
+        i3exit reboot
+        ;;
+    ${menu[4]})
+        i3exit hibernate
+        ;;
+    ${menu[5]})
+        i3exit shutdown 
+        ;;
+esac

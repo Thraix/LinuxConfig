@@ -1,0 +1,24 @@
+#!/bin/sh
+
+cachefolder=/home/thraix/.runescape-data
+filename=$(cat $cachefolder/launch_date).dat
+
+# Download data
+wget -q https://apps.runescape.com/runemetrics/profile/profile\?user\=ThraixTH -O $cachefolder/data/$filename
+
+# Compile data into easier format
+cat $cachefolder/data/$filename | \
+  sed 's/{/{\n/g' | \
+  sed 's/}/\n}/g' | \
+  grep -E 'level.*xp.*rank.*id' | \
+  awk -F '[:,]' '{print $8 " " $2 " " $4}' | \
+  sort -n -k1 | \
+  sed 's/.$//g' | \
+  paste -d " " $cachefolder/skill_name.txt - | \
+  awk -F ' ' '{print $1 " " $3 " " $4}' | \
+  column -t > $cachefolder/compiled/$filename
+
+notify-send -t 1000 "Updated RuneMetric data"
+
+# Store the date of when runescape was launched
+date +%Y%m%d > $cachefolder/launch_date

@@ -1,0 +1,9 @@
+#!/bin/sh
+
+VIBRANCE=$(nvidia-settings --query DigitalVibrance | grep 1023 | grep Attribute);
+if [ "${VIBRANCE:-0}" == 0 ]
+then
+	nvidia-settings --assign \[dpy:0\]/DigitalVibrance\[DVI-D-0\]=1023 > /dev/null
+else
+	nvidia-settings --assign \[dpy:0\]/DigitalVibrance\[DVI-D-0\]=0 > /dev/null
+fi

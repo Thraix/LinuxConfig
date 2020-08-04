@@ -1,0 +1,37 @@
+#!/bin/sh
+
+value()
+{
+  cat $1 | grep \"$2\" | awk -F '\"' '{print $4}'
+}
+
+installpath=$HOME/.local/share/applications
+
+for f in $HOME/.steam/steam/steamapps/*.acf
+do
+  filename=$(value $f "installdir")
+  if [[ $filename == "Proton"* ]]; then
+    continue;
+  fi
+  if [[ $filename == "Steamworks"* ]]; then
+    continue;
+  fi
+  filepath=$installpath/$filename.desktop
+  if test -f "$filepath"; then
+    continue;
+  fi
+  name=$(value $f "name")
+  appid=$(value $f "appid")
+
+  touch "$filepath"
+  echo "[Desktop Entry]" >> "$filepath"
+  echo "Name=$name" >> "$filepath"
+  echo "Comment=Play this game on Steam" >> "$filepath"
+  echo "Exec=steam steam://rungameid/$appid" >> "$filepath"
+  echo "Icon=steam_icon_$appid" >> "$filepath"
+  echo "Terminal=false" >> "$filepath"
+  echo "Type=Application" >> "$filepath"
+  echo "Categories=Game;" >> "$filepath"
+  chmod +x "$filepath"
+  echo Created $filepath
+done
