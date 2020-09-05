@@ -26,7 +26,6 @@ Plugin 'danielwe/base16-vim'
 " C++ Plugins for formatting and auto completion
 Plugin 'thraix/YCM-Generator'
 Plugin 'Valloric/YouCompleteMe'
-Plugin 'rhysd/vim-clang-format'
 
 " LaTeX autocompletion?
 Plugin 'lervag/vimtex'
@@ -37,6 +36,8 @@ filetype plugin indent on
 
 let g:indentLine_conceallevel=2 " Show indentation lines
 let g:vim_json_syntax_conceal=0 " Disable concealments in json files
+let g:tex_flavor = "latex"
+
 
 set langmenu=en_US
 let $LANG = 'en_US'
@@ -79,16 +80,15 @@ noremap <C-l> :tabn<CR>
 noremap <C-b> :tabm -1<CR>
 noremap <C-n> :tabm +1<CR>
 
-" Open nerdtree in directory of the current file
-noremap <C-o> :NERDTree %<CR>
+noremap <C-o> :NERDTree<CR>
 noremap <C-q> :q<CR>
 noremap <C-w> :w<CR>
+noremap <C-f> :find 
 map <F12> :!makegen<CR>
 
 " Format the code and center cursor
 noremap <S-tab> gg=G''zz
 noremap <C-G> :YcmCompleter GoToInclude<CR>
-noremap <C-I> :YcmCompleter GetDoc<CR>
 
 " Center when going to next search
 noremap n nzz
@@ -98,6 +98,14 @@ noremap N Nzz
 " Make search appear in the center of the screen
 cnoremap <expr> <CR> getcmdtype() =~ '[/?]' ? '<CR>zz' : '<CR>'
 
+set undofile
+set undolevels=1000
+set undoreload=10000
+set laststatus=2                " Always show filename in bottom of vim
+set wildignorecase              " Ignore tab completion case
+set ignorecase                  " Ignore searching case
+set wildignore+=**/node_modules/**
+set wildignore+=**/bin/**
 set comments=sl:/*,mb:\ *,elx:\ */
 set conceallevel=0              " Disable all concealments
 set backspace=indent,eol,start
@@ -138,6 +146,9 @@ noremap j g<down>
 noremap k g<up>
 noremap l <right>
 
+noremap <S-j> 10j
+noremap <S-k> 10k
+
 " Shows indentation as a pipe
 let g:indentLine_char = '|'
 
@@ -147,30 +158,30 @@ let g:indentLine_char = '|'
 function! SwitchSourceHeader()
   if (expand ("%:e") == "cpp" || expand("%:e") == "cc" || expand("%:e") == "c")
     if filereadable(join([expand("%<"),".h"],""))
-      tab drop %:r.h
+      e %:r.h
     elseif filereadable(join([expand("%<"),".hpp"],""))
-      tab drop %:r.hpp
+      e %:r.hpp
     else
       let l:confirmed = confirm("Cpp file doesn't exist. Do you want to create it?", "&Yes\n&No\nYes as &hpp", 3)
       if l:confirmed == 1
-        tab drop %:r.h
+        e %:r.h
       elseif l:confirmed == 3
-        tab drop %:r.hpp
+        e %:r.hpp
       endif
     end
   elseif (expand ("%:e") == "hpp" || expand("%:e") == "h")
     if filereadable(join([expand("%<"),".cc"],""))
-      tab drop %:r.cc
+      e %:r.cc
     elseif filereadable(join([expand("%<"),".cpp"],""))
-      tab drop %:r.cpp
+      e %:r.cpp
     elseif filereadable(join([expand("%<"),".c"],""))
-      tab drop %:r.c
+      e %:r.c
     else
       let l:confirmed = confirm("Cpp file doesn't exist. Do you want to create it?", "&Yes\n&No\nYes as &c", 3)
       if l:confirmed == 1
-        tab drop %:r.cpp
+        e %:r.cpp
       elseif l:confirmed == 3
-        tab drop %:r.c
+        e %:r.c
       endif
     endif
   else
@@ -188,53 +199,18 @@ nnoremap ,engine<CR> :-1read $HOME/.vim/.engine.h<CR>:%s/CLASS_NAME/\=expand("%:
 :command! Vimrc :tabe ~/.vimrc
 
 " Setup swp files in their own directory in order to avoid them existing inside projects I'm working on
-set backupdir=~/.vim/backup//
-set directory=~/.vim/swp//
-set undodir=~/.vim/undo//
+set backupdir=~/.vim/backup/
+set directory=~/.vim/swp/
+set undodir=~/.vim/undo/
 
 " YouCompleteMe configurations
 let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
 let g:ycm_confirm_extra_conf = 0
 let g:ycm_autoclose_preview_window_after_completion = 1
 let g:ycm_autoclose_preview_window_after_insertion = 1
-let g:ycm_goto_buffer_command="new-or-existing-tab"
 
 " NERDTree configuration
 let NERDTreeQuitOnOpen=1
-
-" Clang format
-let g:clang_format#style_options = {
-      \ "AccessModifierOffset": -2,
-      \ "AllowShortIfStatementsOnASingleLine": "false",
-      \ "AllowShortFunctionsOnASingleLine": "false",
-      \ "IndentWidth": 2,
-      \ "BreakBeforeBraces": "Custom",
-      \ "BraceWrapping" : {
-      \       "AfterClass": "true",
-      \       "AfterControlStatement": "true",
-      \       "AfterEnum": "true",
-      \       "AfterFunction": "true",
-      \       "AfterNamespace": "true",
-      \       "AfterObjCDeclaration": "true",
-      \       "AfterStruct": "true",
-      \       "AfterUnion": "true",
-      \       "AfterExternBlock": "true",
-      \       "BeforeCatch": "true",
-      \       "BeforeElse": "true",
-      \       "IndentBraces": "false",
-      \       "SplitEmptyFunction": "false",
-      \       "SplitEmptyRecord": "false",
-      \       "SplitEmptyNamespace": "false",
-      \     },
-      \ "CompactNamespaces" : "true",
-      \ "ConstructorInitializerAllOnOneLineOrOnePerLine": "true",
-      \ "ConstructorInitializerIndentWidth": 2,
-      \ "ContinuationIndentWidth": 2,
-      \ "FixNamespaceComments": "false",
-      \ "MaxEmptyLinesToKeep": 2,
-      \ "NamespaceIndentation": "All",
-      \ "UseTab": "Never"
-      \}
 
 " Don't indent namespace and template
 function! CppFormatting()
@@ -274,3 +250,6 @@ if has("autocmd")
   autocmd BufEnter *.{fig,tex} set conceallevel=0
   autocmd BufEnter *.{fig} set filetype=tex
 endif
+
+" Goto last known cursor position
+autocmd BufReadPost * if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~# 'commit'  |  exe "normal! g`\"" | endif
